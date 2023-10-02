@@ -193,34 +193,6 @@ function seekUpdate() {
         total_duration.textContent = durationMinutes + ":" + durationSeconds;
     }
 }
-// // Create an empty playlist array
-// const userPlaylist: Track[] = [];
-// // Function to add selected songs to the user's playlist
-// function addSelectedSongsToPlaylist() {
-//   const songCheckboxes = document.querySelectorAll(".song-checkbox:checked");
-//   songCheckboxes.forEach((checkbox) => {
-//     const name = checkbox.getAttribute("data-name");
-//     const artist = checkbox.getAttribute("data-artist");
-//     const image = checkbox.getAttribute("data-image");
-//     const path = checkbox.getAttribute("data-path");
-//     const track = TrackFactory.createTrack(name, artist, image, path);
-//     userPlaylist.push(track);
-//   });
-//   // Display the user's playlist on the right side
-//   displayUserPlaylist();
-// }
-// // Function to display the user's playlist
-// function displayUserPlaylist() {
-//   const playlistContainer = document.querySelector(".playlist-items");
-//   playlistContainer!.innerHTML = "";
-//   userPlaylist.forEach((track, index) => {
-//     const playlistItem = createPlaylistItem(track, index);
-//     playlistContainer!.appendChild(playlistItem);
-//   });
-// }
-// // Initialize your track_list as you did before
-// // Call this function to display the initial playlist (if any)
-// displayUserPlaylist();
 class Playlist {
     constructor(name, description, tracks) {
         this.name = name;
@@ -240,6 +212,7 @@ class Playlist {
     }
 }
 //BUILDER METHOD
+//This builds the playlist of the user
 class PlaylistBuilder {
     constructor() {
         this.name = '';
@@ -262,27 +235,31 @@ class PlaylistBuilder {
         return new Playlist(this.name, this.description, this.tracks);
     }
 }
-// Usage:
-const playlist = new PlaylistBuilder()
-    .setName('My Awesome Playlist')
-    .setDescription('A collection of great songs')
+// Building the user playlist
+const customPlaylist = new PlaylistBuilder()
+    .setName('kekw')
+    .setDescription('awesome and rad')
     .addTrack(track1)
     .addTrack(track2)
     .addTrack(track3)
     .build();
-playlist.display();
+customPlaylist.display();
 // Create the audio element
 const curr_track = document.createElement('audio');
 // Create an instance of the audio player
 const audioPlayer = new ConcreteAudioPlayer(curr_track);
-// Use Dependency Injection to play a track
-// playTrack(audioPlayer);
 // Get the playlist container
 const playlistContainer = document.querySelector(".playlist-items");
+const customPlaylistContainer = document.querySelector(".custom-playlist-items");
 // Loop through the track_list and create playlist items
 for (let i = 0; i < track_list.length; i++) {
     const playlistItem = createPlaylistItem(track_list[i], i);
     playlistContainer.appendChild(playlistItem);
+}
+for (let i = 0; i < customPlaylist.tracks.length; i++) {
+    const customPlaylistContainer = createPlaylistItem(customPlaylist.tracks[i], i);
+    console.log(customPlaylist.tracks[i], i);
+    customPlaylistContainer.appendChild(customPlaylistContainer);
 }
 // Load the first track in the tracklist
 loadTrack(track_index);
