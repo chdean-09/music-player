@@ -37,7 +37,7 @@ body {
 
 /* Playlist CSS */
 .playlist {
-  top: 100px;
+  top: 70px;
   left: 100px;
   position: absolute;
   width: 250px;
@@ -45,8 +45,7 @@ body {
   border-style: solid;
   padding: 10px;
   overflow-y: auto;
-  background-color: rgb(255, 217, 171);
-  
+  background-color: rgb(255, 217, 171);  
 }
 
 .playlist p {
@@ -56,6 +55,10 @@ body {
   font-size: x-large;
   border-bottom: 2px solid black;
   font-weight: bold;
+}
+
+.playlist-items {
+  width: 100%;
 }
 
 .playlist-item {
@@ -70,19 +73,21 @@ body {
   font-size: x-large;
   display: inline; 
   margin-right: 10px; 
-  font-weight: bold; 
+  font-weight: bold;
+  text-align: left;
 }
 
 .playlist .playlist-item .track-artist {
   font-size: large;
   display: inline; 
-  margin-right: 10px; 
+  margin-right: 10px;
+  text-align: left;
 }
 
 /* For the custom playlist */
 
 .custom-playlist {
-  top: 100px;
+  top: 70px;
   right: 100px;
   position: absolute;
   width: 250px;
@@ -103,25 +108,23 @@ body {
   font-weight: bold;
 }
 
-.custom-playlist-item {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  border-bottom: 1px solid black;
-  padding: 5px 0;
+.custom-playlist-items {
+  width: 100%;
 }
 
-.custom-playlist .custom-playlist-item .track-name {
+.custom-playlist .playlist-item .track-name {
   font-size: x-large;
   display: inline; 
   margin-right: 10px; 
-  font-weight: bold; 
+  font-weight: bold;
+  text-align: left;
 }
 
-.custom-playlist .custom-playlist-item .track-artist {
+.custom-playlist .playlist-item .track-artist {
   font-size: large;
   display: inline; 
-  margin-right: 10px; 
+  margin-right: 10px;
+  text-align: left;
 }
 
 
