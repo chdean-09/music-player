@@ -8,7 +8,7 @@
 "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 
 <!-- Load the custom CSS style file -->
-<link rel="stylesheet" type="text/css" href="test.css">
+<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 <div class="player">
@@ -51,25 +51,15 @@
 	</div>
 </div>
 
+<!-- Define the section for displaying the playlist-->
 <div class="playlist">
 	<p>Select a song</p>
 	<div class="playlist-items"></div>
 </div>
 
-<div class="playlist-create">
-  <p>Select songs to add to your playlist:</p>
-  <div class="song-list">
-    <label>
-      <input type="checkbox" class="song-checkbox" data-name="Dream speedrun" data-artist="Dream" data-image="/images/images.jpg" data-path="/musics/dream-speedrun-minecraf-By-tuna.voicemod.net.mp3"> Dream speedrun by Dream
-    </label>
-    <!-- Add more songs with similar structure -->
-  </div>
-  <button onclick="addSelectedSongsToPlaylist()">Add Selected Songs to Playlist</button>
-</div>
-
 
 <!-- Load the main script for the player -->
-<script src="finalscript.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>

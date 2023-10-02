@@ -167,9 +167,6 @@ class TrackFactory {
 }
 
 
-
-
-
 const track_list: Track[] = [];
 
 const track1 = TrackFactory.createTrackByFileType(
