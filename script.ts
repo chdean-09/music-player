@@ -204,11 +204,27 @@ const track5 = TrackFactory.createTrackByFileType(
   "musics/bing-chilling-made-with-Voicemod-technology.wav"
 );
 
+const track6 = TrackFactory.createTrackByFileType(
+  "shave my balls",
+  "Teroriser",
+  "images/shavemyballs.jpg",
+  "musics/Terroriser - Shave My Balls (feat. Cosmic).mp3"
+);
+
+const track7 = TrackFactory.createTrackByFileType(
+  "GIGA CHAD",
+  "Chad",
+  "images/tn9li7zl9sk91.png",
+  "musics/g3ox_em - GigaChad Theme (Phonk House Version).mp3"
+);
+
 track_list.push(track1);
 track_list.push(track2);
 track_list.push(track3);
 track_list.push(track4);
 track_list.push(track5); //wav file
+track_list.push(track6);
+track_list.push(track7);
 
 
 // Function to create a playlist item element
@@ -349,7 +365,7 @@ const customPlaylist = new PlaylistBuilder()
   .addTrack(track3)
   .build();
 
-  customPlaylist.display();
+customPlaylist.display();
 
 
 // Create the audio element
@@ -370,9 +386,8 @@ for (let i = 0; i < track_list.length; i++) {
 }
 
 for (let i = 0; i < customPlaylist.tracks.length; i++) {
-  const customPlaylistContainer: HTMLDivElement = createPlaylistItem(customPlaylist.tracks[i], i);
-  console.log(customPlaylist.tracks[i], i)
-  customPlaylistContainer!.appendChild(customPlaylistContainer);
+  const customPlaylistItem: HTMLDivElement = createPlaylistItem(customPlaylist.tracks[i], i);
+  customPlaylistContainer!.appendChild(customPlaylistItem);
 }
 
 // Load the first track in the tracklist
