@@ -1,7 +1,6 @@
 "use strict";
 // Select all the elements in the HTML page
 // and assign them to a variable
-const now_playing = document.querySelector(".now-playing");
 const track_art = document.querySelector(".track-art");
 const track_name = document.querySelector(".track-name");
 const track_artist = document.querySelector(".track-artist");
@@ -35,18 +34,14 @@ class ConcreteAudioPlayer {
         playpause_btn.innerHTML = '<i class="fa fa-play-circle fa-5x"></i>';
     }
     next() {
-        if (track_index < track_list.length - 1)
-            track_index += 1;
-        else
-            track_index = 0;
-        loadTrack(track_index);
+        const nextIndex = (track_index + 1) % track_list.length;
+        loadTrack(nextIndex);
+        playTrack();
     }
     prev() {
-        if (track_index > 0)
-            track_index -= 1;
-        else
-            track_index = track_list.length - 1;
-        loadTrack(track_index);
+        const prevIndex = (track_index - 1 + track_list.length) % track_list.length;
+        loadTrack(prevIndex);
+        playTrack();
     }
 }
 // Function that uses the audio player
@@ -74,23 +69,24 @@ function prevTrack() {
     audioPlayer.prev();
     playTrack();
 }
-function loadTrack(track_index) {
+function loadTrack(trackIndex) {
     // Clear the previous seek timer
     clearInterval(updateTimer);
     resetValues();
     // Load a new track
-    curr_track.src = track_list[track_index].path;
+    const track = track_list[trackIndex];
+    curr_track.src = track.path;
     curr_track.load();
     // Update details of the track
     track_art.style.backgroundImage =
-        "url(" + track_list[track_index].image + ")";
-    track_name.textContent = track_list[track_index].name;
-    track_artist.textContent = track_list[track_index].artist;
-    now_playing.textContent =
-        "PLAYING " + (track_index + 1) + " OF " + track_list.length;
+        "url(" + track.image + ")";
+    track_name.textContent = track.name;
+    track_artist.textContent = track.artist;
     // Set an interval of 1000 milliseconds
     // for updating the seek slider
     updateTimer = setInterval(seekUpdate, 1000);
+    // Update the current track index
+    track_index = trackIndex;
     // Move to the next track if the current finishes playing
     // using the 'ended' event
     curr_track.addEventListener("ended", nextTrack);
@@ -241,13 +237,22 @@ class PlaylistBuilder {
 }
 // Building the user playlist
 const customPlaylist = new PlaylistBuilder()
-    .setName('kekw')
-    .setDescription('awesome and rad')
+    .setName('DOPE SONGS')
+    .setDescription('awesome songs I carefully handpicked')
+    .addTrack(track7)
     .addTrack(track1)
-    .addTrack(track2)
-    .addTrack(track3)
+    .addTrack(track4)
     .build();
 customPlaylist.display();
+// Get the custom playlist container
+const customPlaylistTitle = document.querySelector(".custom-playlist");
+// Update the HTML content of the custom playlist container
+customPlaylistTitle.innerHTML = `
+  <p><span style="font-weight: bold; font-size: x-large;">${customPlaylist.name}</span>
+  <br>
+  <span style="font-size: small; font-size: large;">${customPlaylist.description}</span></p>
+  <button class="custom-playlist-items"></button>
+`;
 // Create the audio element
 const curr_track = document.createElement('audio');
 // Create an instance of the audio player
