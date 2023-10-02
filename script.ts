@@ -14,7 +14,6 @@ const curr_time = document.querySelector<HTMLSpanElement>(".current-time");
 const total_duration = document.querySelector<HTMLSpanElement>(".total-duration");
 
 // Specify globally used values
-let track_index: number = 0;
 let isPlaying: boolean = false;
 let updateTimer: NodeJS.Timeout;
 
@@ -54,13 +53,15 @@ class ConcreteAudioPlayer implements AudioPlayer {
   }
 
   next(): void {
-    const nextIndex = (track_index + 1) % track_list.length;
+    const nextIndex = (track_list. + 1) % track_list.length;
+    console.log(nextIndex, track_index)
     loadTrack(nextIndex);
     playTrack();
   }
 
   prev(): void {
     const prevIndex = (track_index - 1 + track_list.length) % track_list.length;
+    console.log(prevIndex, track_index)
     loadTrack(prevIndex);
     playTrack();
   }
@@ -95,13 +96,13 @@ function prevTrack() {
   playTrack();
 }
 
-function loadTrack(trackIndex: number) {
+function loadTrack(id: number) {
   // Clear the previous seek timer
   clearInterval(updateTimer);
   resetValues();
 
   // Load a new track
-  const track = track_list[trackIndex];
+  const track = track_list[id - 1];
   curr_track.src = track.path;
   curr_track.load();
 
@@ -115,9 +116,6 @@ function loadTrack(trackIndex: number) {
   // for updating the seek slider
   updateTimer = setInterval(seekUpdate, 1000);
 
-  // Update the current track index
-  track_index = trackIndex;
-
   // Move to the next track if the current finishes playing
   // using the 'ended' event
   curr_track.addEventListener("ended", nextTrack);
@@ -126,6 +124,7 @@ function loadTrack(trackIndex: number) {
 
 // Factory Method Used Here:
 interface Track {
+  id: number
   name: string;
   artist: string;
   image: string;
@@ -133,11 +132,12 @@ interface Track {
 }
 
 class TrackFactory {
-  static createTrack(name: string, artist: string, image: string, path: string): Track {
-    return { name, artist, image, path };
+  static createTrack(id: number, name: string, artist: string, image: string, path: string): Track {
+    return { id, name, artist, image, path };
   }
 
   static createTrackByFileType(
+    id: number,
     name: string,
     artist: string,
     image: string,
@@ -146,20 +146,20 @@ class TrackFactory {
     const fileExtension = path.split('.').pop();
 
     if (fileExtension === 'mp3') {
-      return TrackFactory.createMP3Track(name, artist, image, path);
+      return TrackFactory.createMP3Track(id, name, artist, image, path);
     } else if (fileExtension === 'wav') {
-      return TrackFactory.createWAVTrack(name, artist, image, path);
+      return TrackFactory.createWAVTrack(id, name, artist, image, path);
     } else {
-      return TrackFactory.createTrack(name, artist, image, path);
+      return TrackFactory.createTrack(id, name, artist, image, path);
     }
   }
 
-  private static createMP3Track(name: string, artist: string, image: string, path: string): Track {
-    return TrackFactory.createTrack(name, artist, image, path);
+  private static createMP3Track(id: number, name: string, artist: string, image: string, path: string): Track {
+    return TrackFactory.createTrack(id, name, artist, image, path);
   }
 
-  private static createWAVTrack(name: string, artist: string, image: string, path: string): Track {
-    return TrackFactory.createTrack(name, artist, image, path);
+  private static createWAVTrack(id: number, name: string, artist: string, image: string, path: string): Track {
+    return TrackFactory.createTrack(id, name, artist, image, path);
   }
 }
 
@@ -167,6 +167,7 @@ class TrackFactory {
 const track_list: Track[] = [];
 
 const track1 = TrackFactory.createTrackByFileType(
+  1,
   "Dream speedrun",
   "Dream",
   "/images/images.jpg",
@@ -174,6 +175,7 @@ const track1 = TrackFactory.createTrackByFileType(
 );
 
 const track2 = TrackFactory.createTrackByFileType(
+  2,
   "Let me do it 4 u",
   "weird dog",
   "/images/artworks-bY3urlG4g0nzwquw-4rMuzw-t500x500.jpg",
@@ -181,6 +183,7 @@ const track2 = TrackFactory.createTrackByFileType(
 );
 
 const track3 = TrackFactory.createTrackByFileType(
+  3,
   "Better Call Saul",
   "Saul Goodman",
   "images/communityIcon_2g6eqpguule91.png",
@@ -188,6 +191,7 @@ const track3 = TrackFactory.createTrackByFileType(
 );
 
 const track4 = TrackFactory.createTrackByFileType(
+  4,
   "THE BOYS",
   "Imagine Lizards",
   "images/steamuserimages-a.akamaihd.jpg",
@@ -195,6 +199,7 @@ const track4 = TrackFactory.createTrackByFileType(
 );
 
 const track5 = TrackFactory.createTrackByFileType(
+  5,
   "bing chilling",
   "John Cena",
   "images/bingchilling.jpg",
@@ -202,6 +207,7 @@ const track5 = TrackFactory.createTrackByFileType(
 );
 
 const track6 = TrackFactory.createTrackByFileType(
+  6,
   "shave my balls",
   "Teroriser",
   "images/shavemyballs.jpg",
@@ -209,6 +215,7 @@ const track6 = TrackFactory.createTrackByFileType(
 );
 
 const track7 = TrackFactory.createTrackByFileType(
+  7,
   "GIGA CHAD",
   "Chad",
   "images/tn9li7zl9sk91.png",
@@ -225,7 +232,7 @@ track_list.push(track7);
 
 
 // Function to create a playlist item element
-function createPlaylistItem(track: Track, track_index: number) {
+function createPlaylistItem(track: Track, id: number) {
   const playlistItem = document.createElement("div");
   playlistItem.classList.add("playlist-item");
   
@@ -237,7 +244,7 @@ function createPlaylistItem(track: Track, track_index: number) {
   
   // Add an event listener to play the track when clicked
   playlistItem.addEventListener("click", () => {
-    loadTrack(track_index);
+    loadTrack(id);
     playTrack();
   });
   
@@ -389,14 +396,14 @@ const customPlaylistContainer = document.querySelector(".custom-playlist-items")
 
 // Loop through the track_list and create playlist items
 for (let i = 0; i < track_list.length; i++) {
-  const playlistItem: HTMLDivElement = createPlaylistItem(track_list[i], i);
+  const playlistItem: HTMLDivElement = createPlaylistItem(track_list[i], track_list[i].id);
   playlistContainer!.appendChild(playlistItem);
 }
 
 for (let i = 0; i < customPlaylist.tracks.length; i++) {
-  const customPlaylistItem: HTMLDivElement = createPlaylistItem(customPlaylist.tracks[i], i);
+  const customPlaylistItem: HTMLDivElement = createPlaylistItem(customPlaylist.tracks[i], customPlaylist.tracks[i].id);
   customPlaylistContainer!.appendChild(customPlaylistItem);
 }
 
 // Load the first track in the tracklist
-loadTrack(track_index);
+// loadTrack(track_index);

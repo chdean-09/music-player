@@ -12,7 +12,6 @@ const volume_slider = document.querySelector(".volume_slider");
 const curr_time = document.querySelector(".current-time");
 const total_duration = document.querySelector(".total-duration");
 // Specify globally used values
-let track_index = 0;
 let isPlaying = false;
 let updateTimer;
 // Create a concrete implementation of the AudioPlayer interface
@@ -34,12 +33,14 @@ class ConcreteAudioPlayer {
         playpause_btn.innerHTML = '<i class="fa fa-play-circle fa-5x"></i>';
     }
     next() {
-        const nextIndex = (track_index + 1) % track_list.length;
+        const nextIndex = (track_list. + 1) % track_list.length;
+        console.log(nextIndex, track_index);
         loadTrack(nextIndex);
         playTrack();
     }
     prev() {
         const prevIndex = (track_index - 1 + track_list.length) % track_list.length;
+        console.log(prevIndex, track_index);
         loadTrack(prevIndex);
         playTrack();
     }
@@ -69,12 +70,12 @@ function prevTrack() {
     audioPlayer.prev();
     playTrack();
 }
-function loadTrack(trackIndex) {
+function loadTrack(id) {
     // Clear the previous seek timer
     clearInterval(updateTimer);
     resetValues();
     // Load a new track
-    const track = track_list[trackIndex];
+    const track = track_list[id - 1];
     curr_track.src = track.path;
     curr_track.load();
     // Update details of the track
@@ -85,43 +86,41 @@ function loadTrack(trackIndex) {
     // Set an interval of 1000 milliseconds
     // for updating the seek slider
     updateTimer = setInterval(seekUpdate, 1000);
-    // Update the current track index
-    track_index = trackIndex;
     // Move to the next track if the current finishes playing
     // using the 'ended' event
     curr_track.addEventListener("ended", nextTrack);
 }
 class TrackFactory {
-    static createTrack(name, artist, image, path) {
-        return { name, artist, image, path };
+    static createTrack(id, name, artist, image, path) {
+        return { id, name, artist, image, path };
     }
-    static createTrackByFileType(name, artist, image, path) {
+    static createTrackByFileType(id, name, artist, image, path) {
         const fileExtension = path.split('.').pop();
         if (fileExtension === 'mp3') {
-            return TrackFactory.createMP3Track(name, artist, image, path);
+            return TrackFactory.createMP3Track(id, name, artist, image, path);
         }
         else if (fileExtension === 'wav') {
-            return TrackFactory.createWAVTrack(name, artist, image, path);
+            return TrackFactory.createWAVTrack(id, name, artist, image, path);
         }
         else {
-            return TrackFactory.createTrack(name, artist, image, path);
+            return TrackFactory.createTrack(id, name, artist, image, path);
         }
     }
-    static createMP3Track(name, artist, image, path) {
-        return TrackFactory.createTrack(name, artist, image, path);
+    static createMP3Track(id, name, artist, image, path) {
+        return TrackFactory.createTrack(id, name, artist, image, path);
     }
-    static createWAVTrack(name, artist, image, path) {
-        return TrackFactory.createTrack(name, artist, image, path);
+    static createWAVTrack(id, name, artist, image, path) {
+        return TrackFactory.createTrack(id, name, artist, image, path);
     }
 }
 const track_list = [];
-const track1 = TrackFactory.createTrackByFileType("Dream speedrun", "Dream", "/images/images.jpg", "/musics/dream-speedrun-minecraf-By-tuna.voicemod.net.mp3");
-const track2 = TrackFactory.createTrackByFileType("Let me do it 4 u", "weird dog", "/images/artworks-bY3urlG4g0nzwquw-4rMuzw-t500x500.jpg", "/musics/let-me-do-it-for-you-By-tuna.voicemod.net.mp3");
-const track3 = TrackFactory.createTrackByFileType("Better Call Saul", "Saul Goodman", "images/communityIcon_2g6eqpguule91.png", "/musics/3d-saul-goodman-extended-to-full-song-1080p-fu-made-with-Voicemod-technology.mp3");
-const track4 = TrackFactory.createTrackByFileType("THE BOYS", "Imagine Lizards", "images/steamuserimages-a.akamaihd.jpg", "musics/the-boys-meme-By-tuna.voicemod.net.mp3");
-const track5 = TrackFactory.createTrackByFileType("bing chilling", "John Cena", "images/bingchilling.jpg", "musics/bing-chilling-made-with-Voicemod-technology.wav");
-const track6 = TrackFactory.createTrackByFileType("shave my balls", "Teroriser", "images/shavemyballs.jpg", "musics/Terroriser - Shave My Balls (feat. Cosmic).mp3");
-const track7 = TrackFactory.createTrackByFileType("GIGA CHAD", "Chad", "images/tn9li7zl9sk91.png", "musics/g3ox_em - GigaChad Theme (Phonk House Version).mp3");
+const track1 = TrackFactory.createTrackByFileType(1, "Dream speedrun", "Dream", "/images/images.jpg", "/musics/dream-speedrun-minecraf-By-tuna.voicemod.net.mp3");
+const track2 = TrackFactory.createTrackByFileType(2, "Let me do it 4 u", "weird dog", "/images/artworks-bY3urlG4g0nzwquw-4rMuzw-t500x500.jpg", "/musics/let-me-do-it-for-you-By-tuna.voicemod.net.mp3");
+const track3 = TrackFactory.createTrackByFileType(3, "Better Call Saul", "Saul Goodman", "images/communityIcon_2g6eqpguule91.png", "/musics/3d-saul-goodman-extended-to-full-song-1080p-fu-made-with-Voicemod-technology.mp3");
+const track4 = TrackFactory.createTrackByFileType(4, "THE BOYS", "Imagine Lizards", "images/steamuserimages-a.akamaihd.jpg", "musics/the-boys-meme-By-tuna.voicemod.net.mp3");
+const track5 = TrackFactory.createTrackByFileType(5, "bing chilling", "John Cena", "images/bingchilling.jpg", "musics/bing-chilling-made-with-Voicemod-technology.wav");
+const track6 = TrackFactory.createTrackByFileType(6, "shave my balls", "Teroriser", "images/shavemyballs.jpg", "musics/Terroriser - Shave My Balls (feat. Cosmic).mp3");
+const track7 = TrackFactory.createTrackByFileType(7, "GIGA CHAD", "Chad", "images/tn9li7zl9sk91.png", "musics/g3ox_em - GigaChad Theme (Phonk House Version).mp3");
 track_list.push(track1);
 track_list.push(track2);
 track_list.push(track3);
@@ -130,7 +129,7 @@ track_list.push(track5); //wav file
 track_list.push(track6);
 track_list.push(track7);
 // Function to create a playlist item element
-function createPlaylistItem(track, track_index) {
+function createPlaylistItem(track, id) {
     const playlistItem = document.createElement("div");
     playlistItem.classList.add("playlist-item");
     // You can customize the HTML structure for each playlist item here
@@ -140,7 +139,7 @@ function createPlaylistItem(track, track_index) {
   `;
     // Add an event listener to play the track when clicked
     playlistItem.addEventListener("click", () => {
-        loadTrack(track_index);
+        loadTrack(id);
         playTrack();
     });
     return playlistItem;
@@ -262,12 +261,12 @@ const playlistContainer = document.querySelector(".playlist-items");
 const customPlaylistContainer = document.querySelector(".custom-playlist-items");
 // Loop through the track_list and create playlist items
 for (let i = 0; i < track_list.length; i++) {
-    const playlistItem = createPlaylistItem(track_list[i], i);
+    const playlistItem = createPlaylistItem(track_list[i], track_list[i].id);
     playlistContainer.appendChild(playlistItem);
 }
 for (let i = 0; i < customPlaylist.tracks.length; i++) {
-    const customPlaylistItem = createPlaylistItem(customPlaylist.tracks[i], i);
+    const customPlaylistItem = createPlaylistItem(customPlaylist.tracks[i], customPlaylist.tracks[i].id);
     customPlaylistContainer.appendChild(customPlaylistItem);
 }
 // Load the first track in the tracklist
-loadTrack(track_index);
+// loadTrack(track_index);
